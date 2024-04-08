@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interday Precision Calculator</title>
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 28px;
+            margin-top: 40px;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .table-container {
+            margin: 0 20px;
+        }
+
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 600px;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        input[type="number"] {
+            width: 100px;
+            font-size: 20px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 28px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result-table {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .result-table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .result-table td {
+            padding: 20px;
+        }
+
+        p {
+            font-size: 24px;
+        }
+    </style>
+    <script type="text/javascript">
+        function calculatePrecision() {
+            // Get the input values
+            var injections = [];
+            for (var i = 1; i <= 3; i++) {
+                for (var j = 1; j <= 6; j++) {
+                    var inputId = "day" + i + "Injection" + j;
+                    var inputElement = document.getElementById(inputId);
+                    injections.push(parseFloat(inputElement.value));
+                }
+            }
+
+            // Calculate the mean
+            var sum = injections.reduce((a, b) => a + b, 0);
+            var mean = sum / injections.length;
+
+            // Calculate the standard deviation
+            var squaredDifferences = injections.map(x => Math.pow(x - mean, 2));
+            var sumOfSquaredDifferences = squaredDifferences.reduce((a, b) => a + b, 0);
+            var variance = sumOfSquaredDifferences / injections.length;
+            var standardDeviation = Math.sqrt(variance);
+
+            // Calculate the coefficient of variation (CV)
+            var coefficientOfVariation = (standardDeviation / mean) * 100;
+
+            // Display the results
+            document.getElementById("mean").innerText = mean.toFixed(2);
+            document.getElementById("standardDeviation").innerText = standardDeviation.toFixed(2);
+            document.getElementById("coefficientOfVariation").innerText = coefficientOfVariation.toFixed(2);
+        }
+    </script>
+</head>
+<body>
+    <h1>Interday Precision Calculator</h1>
+
+    <h2>Input Injections</h2>
+    <table>
+        <tr>
+            <th>Day</th>
+            <th>Injection 1</th>
+            <th>Injection 2</th>
+            <th>Injection 3</th>
+            <th>Injection 4</th>
+            <th>Injection 5</th>
+            <th>Injection 6</th>
+        </tr>
+        <tr>
+            <td>Day 1</td>
+            <td><input type="number" step="any" id="day1Injection1"></td>
+            <td><input type="number" step="any" id="day1Injection2"></td>
+            <td><input type="number" step="any" id="day1Injection3"></td>
+            <td><input type="number" step="any" id="day1Injection4"></td>
+            <td><input type="number" step="any" id="day1Injection5"></td>
+            <td><input type="number" step="any" id="day1Injection6"></td>
+        </tr>
+        <tr>
+            <td>Day 2</td>
+            <td><input type="number" step="any" id="day2Injection1"></td>
+            <td><input type="number" step="any" id="day2Injection2"></td>
+            <td><input type="number" step="any" id="day2Injection3"></td>
+            <td><input type="number" step="any" id="day2Injection4"></td>
+            <td><input type="number" step="any" id="day2Injection5"></td>
+            <td><input type="number" step="any" id="day2Injection6"></td>
+        </tr>
+        <tr>
+            <td>Day 3</td>
+            <td><input type="number" step="any" id="day3Injection1"></td>
+            <td><input type="number" step="any" id="day3Injection2"></td>
+            <td><input type="number" step="any" id="day3Injection3"></td>
+            <td><input type="number" step="any" id="day3Injection4"></td>
+            <td><input type="number" step="any" id="day3Injection5"></td>
+            <td><input type="number" step="any" id="day3Injection6"></td>
+        </tr>
+    </table>
+
+    <button onclick="calculatePrecision()">Calculate Precision</button>
+
+    <h2>Results</h2>
+    <p>Mean: <span id="mean"></span></p>
+    <p>Standard Deviation: <span id="standardDeviation"></span></p>
+    <p>Coefficient of Variation (CV%): <span id="coefficientOfVariation"></span></p>
+<p>Use the same table to calculate the other concentrations. 
+<p>Note: The FDA requires that acceptable criteria is: within-run and between runs: less that +/- 15% CV, except +/- 20% CV at LLOQ.</p>
+</body>
+</html>
